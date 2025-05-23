@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: flutter-frontend
+    env: docker
+    repo: https://github.com/Tamil-07-Selvan/Frontend-CI-CD
+    branch: main
+    dockerfilePath: Dockerfile
+    plan: free
+    healthCheckPath: /
