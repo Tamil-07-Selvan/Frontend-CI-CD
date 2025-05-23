@@ -1,32 +1,27 @@
 # Use official Flutter image
 FROM cirrusci/flutter:stable AS build
 
-# Set working directory
-WORKDIR /frontend_cicid
-
-# Copy source code
-COPY . .
-
-# Enable Flutter web
+# Enable web
+RUN flutter channel stable
+RUN flutter upgrade
 RUN flutter config --enable-web
 
-# Get dependencies
-RUN flutter pub get
+# Copy app code
+COPY . /app
+WORKDIR /app
 
-# Build Flutter web
+# Get dependencies and build web app
+RUN flutter pub get
 RUN flutter build web
 
-# Serve with a simple web server (nginx)
+# Stage for serving with nginx
 FROM nginx:alpine
 
-# Remove default nginx static files
+# Remove default nginx static assets
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy Flutter build output to nginx directory
+# Copy built Flutter web app
 COPY --from=build /app/build/web /usr/share/nginx/html
-
-# Copy custom nginx config (optional)
-# COPY nginx.conf /etc/nginx/nginx.conf
 
 # Expose port 80
 EXPOSE 80
