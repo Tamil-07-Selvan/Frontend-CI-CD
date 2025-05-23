@@ -2,7 +2,7 @@
 FROM cirrusci/flutter:stable AS build
 
 # Set working directory
-WORKDIR /app
+WORKDIR /frontend_cicid
 
 # Copy source code
 COPY . .
